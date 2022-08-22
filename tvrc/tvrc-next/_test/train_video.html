@@ -1,0 +1,97 @@
+<html>
+
+<head>
+  <style>
+    #speed-meter {
+      position: absolute;
+      font-size: 30px;
+      font-weight: bold;
+      color: red;
+      right: 0px;
+      top: 10px;
+      z-index: 15;
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <video id="video_1" controls>
+    <source src="../public/train.test.mp4" type="video/mp4">
+  </video>
+  <div id="speed-meter">
+  </div>
+  <script type="text/javascript">
+    var video = document.getElementById('video_1');
+    var intervalRewind;
+    let speedMeter = document.getElementById('speed-meter');
+    let speed = 0;
+    displaySpeed();
+    document.onkeydown = function (event) {
+      let time = video_1.currentTime;
+      switch (event.keyCode) {
+        case 38: // up arrow
+          event.preventDefault();
+          if (speed < 5) {
+            ++speed;
+          }
+          break;
+        case 40: // down arrow
+          event.preventDefault();
+          if (speed > -5) {
+            --speed;
+          }
+          break;
+      }
+      controlSpeed();
+    }
+
+    function displaySpeed() {
+      speedMeter.innerText = speed;
+    }
+
+    function controlSpeed() {
+      displaySpeed();
+      if (speed >= 1) {
+        video.playbackRate = speed;
+        if (video.paused) video.play();
+      } else if (speed > 0 && speed < 1) {
+        clearInterval(intervalRewind);
+        if (video.paused) video.play();
+        setTimeout(function () {
+          // Not sure why, but setting the playback to
+          // less than 1.0 only works when out of band
+          // or the video is already playing.
+          video.playbackRate = speed;
+          // console.log('delayed');
+        }, 0);
+      } else if (speed == 0) {
+        clearInterval(intervalRewind);
+        video.pause();
+      } else {
+        rewindVideo(speed * -1);
+      }
+    }
+
+    function rewindVideo(rewindSpeed) {
+      clearInterval(intervalRewind);
+      var startSystemTime = new Date().getTime();
+      var startVideoTime = video.currentTime;
+
+      intervalRewind = setInterval(function () {
+        video.playbackRate = 1.0;
+        if (video.currentTime == 0) {
+          clearInterval(intervalRewind);
+          video.pause();
+        } else {
+          const elapsed = new Date().getTime() - startSystemTime;
+          // log.textContent = 'Rewind Elapsed: ' + elapsed.toFixed(3);
+          video.currentTime = Math.max(startVideoTime - elapsed * rewindSpeed / 1000.0, 0);
+        }
+      }, 30);
+    }
+  </script>
+</body>
+
+</html>
