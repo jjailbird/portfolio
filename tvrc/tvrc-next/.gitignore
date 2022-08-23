@@ -38,3 +38,4 @@ next-env.d.ts
 .github_token
 
 *.mp4
+*.webm

@@ -56,3 +56,16 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Compiling, Minifying, Bundling, Code Splitting, etc...
 
  
+ ## FFmpeg
+
+ [Using FFmpeg](https://xilinx.github.io/video-sdk/v1.0/using_ffmpeg.html)
+
+ [FFmpeg 옵션](https://cocatv.tistory.com/269)
+
+ [Convert MP4 to WebM Lossless on macOS](https://kevdees.com/convert-mp4-to-webm-lossless-on-macos/)
+
+ ```bash
+# ffmpeg cut video with timestamp
+ffmpeg -ss 00:01:00 -to 00:02:00 -i input.mp4 -async 1 cut.mp4
+ffmpeg -ss 00:01:00 -t 00:01:00 -i input.mp4 -async 1 cut.mp4
+ ```
